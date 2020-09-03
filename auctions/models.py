@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 
 
 class User(AbstractUser):
@@ -7,10 +8,13 @@ class User(AbstractUser):
 
 
 class Auction(models.Model):
-    image = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100)
+    image = models.FileField()
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=300)
-    price = models.FloatField
+    price = models.FloatField(default=0)
+
+    def get_absolute_url(self):
+        return reverse('index')
 
 
 class Bids(models.Model):

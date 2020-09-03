@@ -1,39 +1,39 @@
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
-from .models import User
+from django.db import IntegrityError
+from .models import User, Auction
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
+from .forms import AuctionForm
 
 
 def index(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
     return render(request, "auctions/index.html")
 
 
 def login_view(request):
     if request.method == "POST":
-
-        # Attempt to sign user in
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
-
-        # Check if authentication successful
-        if user is not None:
+        if user:
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "auctions/login.html", {
-                "message": "Invalid username and/or password."
+                "message": "not valid"
             })
-    else:
-        return render(request, "auctions/login.html")
+    return render(request, "auctions/login.html")
 
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return render(request, "auctions/login.html", {
+        "message": "you have logged out"
+    })
 
 
 def register(request):
@@ -61,3 +61,11 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+
+class CreateListing(CreateView):
+    model = Auction
+    form_class = AuctionForm
+    template_name = "auctions/create_listing.html"
+
+
