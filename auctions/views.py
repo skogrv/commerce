@@ -71,18 +71,11 @@ class CreateListing(CreateView):
 
 
 
-
-
 class Listing(ListView):
     model = Auction
     template_name = 'auctions/listings.html'
 
 
-def mylistings(request):
-    posts = Auction.objects.all()
-    return render(request, "auctions/mylistings.html", {
-        "user_posts": posts
-    })
 
 
 class Listingmy(ListView):

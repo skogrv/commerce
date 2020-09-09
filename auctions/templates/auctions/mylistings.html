@@ -3,7 +3,7 @@
 
 {% block body %}
     {% for auction in object_list %}
-        {% if user.username == auction.author %}
+        {% if auction.auth == request.user %}
             {{ auction.name }} <br>
             {{ auction.price }}<br>
             {{ auction.description }}<br>

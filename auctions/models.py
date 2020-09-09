@@ -2,6 +2,10 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
+from django_currentuser.middleware import (
+    get_current_user, get_current_authenticated_user)
+from django_currentuser.db.models import CurrentUserField
+
 
 
 class User(AbstractUser):
@@ -10,6 +14,7 @@ class User(AbstractUser):
 
 class Auction(models.Model):
     author = models.CharField(max_length=50)
+    auth = CurrentUserField()
     image = models.ImageField(upload_to='media/')
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=300)
