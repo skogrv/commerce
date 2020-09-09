@@ -1,0 +1,14 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+    {% for auction in object_list %}
+        {% if user.username == auction.author %}
+            {{ auction.name }} <br>
+            {{ auction.price }}<br>
+            {{ auction.description }}<br>
+            {{ user.username }}
+            <hr><img src="{{ auction.image.url }}" alt="no"><br>
+        {% endif %}
+    {% endfor %}
+{%endblock %}

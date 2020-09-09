@@ -44,6 +44,7 @@ def register(request):
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
+
         if password != confirmation:
             return render(request, "auctions/register.html", {
                 "message": "Passwords must match."
@@ -66,6 +67,26 @@ def register(request):
 class CreateListing(CreateView):
     model = Auction
     form_class = AuctionForm
-    template_name = "auctions/create_listing.html"
+    template_name = 'auctions/create_listing.html'
+
+
+
+
+
+class Listing(ListView):
+    model = Auction
+    template_name = 'auctions/listings.html'
+
+
+def mylistings(request):
+    posts = Auction.objects.all()
+    return render(request, "auctions/mylistings.html", {
+        "user_posts": posts
+    })
+
+
+class Listingmy(ListView):
+    model = Auction
+    template_name = 'auctions/mylistings.html'
 
 

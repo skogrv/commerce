@@ -1,0 +1,13 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+    {% for auction in object_list %}
+        <div class="form-group">
+            {{ auction.name }} <br>
+            {{ auction.price }}<br>
+            {{ auction.description }}<br>
+            {{ auction.author }}
+            <hr><img src="{{ auction.image.url }}" alt="no"><br>
+    {% endfor %}
+{% endblock %}
