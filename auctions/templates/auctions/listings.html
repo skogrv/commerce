@@ -4,11 +4,14 @@
 {% block body %}
     {% for auction in object_list %}
         <div class="form-group">
-            {{ auction.name }} <br>
+        <div class="list_post">
+            <b><a href="{% url 'listing' auction.pk %}">{{ auction.name }}</a></b>
             {{ auction.price }}<br>
-            {{ auction.description }}<br>
+            {{ auction.description}}<br>
             {{ auction.author }}
-            {{ auction.auth }}
-            <hr><img src="{{ auction.image.url }}" alt="no"><br>
+            {{ auction.category }}
+            <hr><img src="{{ auction.image.url }}" alt="no" class="image_listing"><br>
+         - <a href="{% url 'add_fav' auction.id %}">Add to card</a><br>
+        </div>
     {% endfor %}
 {% endblock %}

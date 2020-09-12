@@ -1,11 +1,16 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.urls import reverse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse, reverse_lazy
 from django.db import IntegrityError
+from rest_framework import status
+from rest_framework.response import Response
+
 from .models import User, Auction
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView, DeleteView
 from .forms import AuctionForm
+from cart.cart import Cart
+from rest_framework.views import APIView
 
 
 def index(request):
@@ -70,12 +75,9 @@ class CreateListing(CreateView):
     template_name = 'auctions/create_listing.html'
 
 
-
-class Listing(ListView):
+class Listings(ListView):
     model = Auction
     template_name = 'auctions/listings.html'
-
-
 
 
 class Listingmy(ListView):
@@ -83,3 +85,41 @@ class Listingmy(ListView):
     template_name = 'auctions/mylistings.html'
 
 
+class EditPost(UpdateView):
+    model = Auction
+    form_class = AuctionForm
+    template_name = 'auctions/edit_post.html'
+
+
+class DeletePost(DeleteView):
+    model = Auction
+    template_name = 'auctions/delete_post.html'
+    success_url = reverse_lazy('mylistings')
+
+
+class CheckPost(DetailView):
+    model = Auction
+    template_name = 'auctions/listing.html'
+
+
+def watchlist(request):
+    return render(request, "auctions/watchlist.html", {"user": User})
+
+
+def add_fav(request, id):
+    cart = Cart(request)
+    post = Auction.objects.get(id=id)
+    cart.add(product=post)
+    return redirect("watchlist")
+
+
+def item_clear(request, id):
+    cart = Cart(request)
+    product = Auction.objects.get(id=id)
+    cart.remove(product)
+    return redirect("watchlist")
+
+def items_clear(request):
+    cart = Cart(request)
+    cart.clear()
+    return redirect("watchlist")

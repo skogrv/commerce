@@ -5,10 +5,11 @@ from .models import Auction
 class AuctionForm(forms.ModelForm):
     class Meta:
         model = Auction
-        fields = ('image', 'price', 'name', 'description', 'author')
+        fields = ('image', 'price', 'name', 'description', 'category')
 
         widgets = {
-            'author': forms.TextInput(attrs={'class': 'form-control'}),
+            #'author': forms.TextInput(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
             'image': forms.FileInput(),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),

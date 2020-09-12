@@ -1,0 +1,13 @@
+{% extends "auctions/layout.html" %}
+{% load cart_tag %}
+
+{% block body %}
+    Total Length :: {{request.session.cart|length}}
+    {% for key,value in request.session.cart.items %} <br>
+        {{ value.name }} - <a href="{% url 'remove_fav' value.product_id%}">Delete</a>
+        {{ value.description }}<br>
+        {{ value.price }}
+        <hr><img src="{{ value.image }}" alt="no" class="image_listing"><br>
+        <br>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+    <h2 id="new">Edit post</h2>
+
+    <div class="form-group">
+        <form method="Post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="image_edit">
+                <img src="{{ auction.image.url }} " id="edit_image">
+            </div>
+            {{ form.as_p }}
+            <button class="btn btn-primary">Save</button>
+{% endblock %}
